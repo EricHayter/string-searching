@@ -9,6 +9,8 @@
 
 #include "search_function.h"
 
+#include "naive_search.h"
+
 using Clock = std::chrono::steady_clock;
 
 int main(int argc, const char **const argv) {
@@ -30,14 +32,15 @@ int main(int argc, const char **const argv) {
     return 0;
   }
 
-  std::string file_contents;
   std::fstream fstream(file_path);
-  fstream >> file_contents;
+  std::stringstream buffer;
+  buffer << fstream.rdbuf();
+  std::string file_contents(buffer.str());
 
   /* Fill this with definitions names and functions for string searching
    * algorithms */
   const std::unordered_map<std::string_view, StringSearchFunction> algo_map{
-
+    { "naive", naive_search }
   };
 
   std::string_view algo_str = args[1];
@@ -56,11 +59,11 @@ int main(int argc, const char **const argv) {
   auto duration_ms =
       std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 
-  if (idx == std::string::npos) {
-    std::cout << std::format("Found {} at index {} in {} in {} ms\n", pattern,
+  if (idx != std::string::npos) {
+    std::cout << std::format("Found {} at index {} in {} in {}\n", pattern,
                              idx, file_path.string(), duration_ms);
   } else {
-    std::cout << std::format("Couldn't find {} in {} in {} ms\n", pattern,
+    std::cout << std::format("Couldn't find {} in {} in {}\n", pattern,
                              file_path.string(), duration_ms);
   }
 
