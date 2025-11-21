@@ -10,6 +10,7 @@
 #include "search_function.h"
 
 #include "naive_search.h"
+#include "boyer_moore_search.h"
 
 using Clock = std::chrono::steady_clock;
 
@@ -40,7 +41,8 @@ int main(int argc, const char **const argv) {
   /* Fill this with definitions names and functions for string searching
    * algorithms */
   const std::unordered_map<std::string_view, StringSearchFunction> algo_map{
-    { "naive", naive_search }
+    { "naive", naive_search },
+    { "boyer-moore", boyer_moore_search },
   };
 
   std::string_view algo_str = args[1];

@@ -7,6 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(search
     src/main.cpp
     src/naive_search.cpp
+    src/boyer_moore_search.cpp
 )
 
 target_include_directories(search PRIVATE include)
